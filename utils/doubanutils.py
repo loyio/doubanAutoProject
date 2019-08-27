@@ -108,8 +108,6 @@ def get_verify_code_pic(url, cookie_no):
     # 获取验证码的图片URL和id
 
     r = requests.get(url, cookies=get_cookies(cookie_no))
-    # with open("req.html", "w+") as f:
-    #     f.write(r.text)
     if r.status_code == 200:
         pic_url, pic_id = get_image_and_id(r.text)
         logger.info(str(pic_url))
@@ -121,8 +119,6 @@ def get_verify_code_pic(url, cookie_no):
 
 def get_image_and_id(text):
     # 通过html提取验证码图片URL和id
-
-    print(text)
     html = etree.HTML(text)
     pic_url = html.xpath("//img[@class='captcha_image']/@src")
     pic_id = html.xpath("//input[@name='captcha-id']/@value")

@@ -10,6 +10,7 @@ import random
 
 sys.path.append('/Users/susmote/PycharmProjects/doubanAutoProject')
 from group import autocomment
+from utils import doubanutils
 
 sys.setrecursionlimit(1000000)
 
@@ -27,9 +28,18 @@ if __name__ == "__main__":
         topics_url = "https://www.douban.com/group/topic/150598494"
         comment_str = emoji_text[random.randint(0, len(emoji_text)-1)]
         comment_topic_url = topics_url + "/add_comment"
-        comment_dict = autocomment.make_comment_dict(comment_topic_url, comment_str, 2)
-        print('result', autocomment.comment_topic(comment_topic_url, comment_dict, 2))
-        print("成功顶贴一条:", comment_topic_url)
+        pic_url, pic_id = "", ""
+        comment_dict = autocomment.make_comment_dict(comment_topic_url, comment_str, 2, pic_url, pic_id)
+        res = autocomment.comment_topic(comment_topic_url, comment_dict, 2)
+        while(True):
+            pic_url, pic_id = doubanutils.get_image_and_id(res)
+            if pic_url == "" or pic_id == "":
+                print("顶帖成功:", comment_str)
+                break
+            else:
+                print("正在解析验证码!!!")
+                comment_dict = autocomment.make_comment_dict(comment_topic_url, comment_str, 2, pic_url, pic_id)
+                res = autocomment.comment_topic(comment_topic_url, comment_dict, 2)
         init_no += 1
-        time.sleep(300)
         print("*"*30)
+        time.sleep(300)
