@@ -122,7 +122,6 @@ def get_image_and_id(text):
     html = etree.HTML(text)
     pic_url = html.xpath("//img[@class='captcha_image']/@src")
     pic_id = html.xpath("//input[@name='captcha-id']/@value")
-    print("pic_url",pic_url, "pic_id", pic_id)
     if len(pic_url) and len(pic_id):
         return pic_url[0], pic_id[0]
     else:
